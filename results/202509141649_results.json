@@ -1,16 +1,21 @@
 {
   "cqlengine": {
     "apiUrl": "https://vonkhost:4081/$cql",
-    "cqlVersion": "1.5"
+    "cqlVersion": "1.5",
+    "description": "Unknown",
+    "cqlTranslator": "Java CQFramework Translator",
+    "cqlTranslatorVersion": "Unknown",
+    "cqlEngine": "Java CQFramework Engine",
+    "cqlEngineVersion": "Unknown"
   },
   "testsRunDateTime": "2025-09-14T20:35:18.004Z",
-  "testsRunDescription": "Firely Engine Results, HL7 Connectathon 40",
   "testResultsSummary": {
     "passCount": 1320,
     "skipCount": 39,
     "failCount": 266,
     "errorCount": 66
   },
+  "testsRunDescription": "Firely Engine Results, HL7 Connectathon 40",
   "results": [
     {
       "testStatus": "pass",
