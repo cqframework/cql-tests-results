@@ -1,7 +1,12 @@
 {
   "cqlengine": {
     "apiUrl": "https://cloud.alphora.com/sandbox/r4/cds/fhir/$cql",
-    "cqlVersion": "1.5"
+    "cqlVersion": "1.5",
+    "description": "Unknown",
+    "cqlTranslator": "Java CQFramework Translator",
+    "cqlTranslatorVersion": "Unknown",
+    "cqlEngine": "Java CQFramework Engine",
+    "cqlEngineVersion": "Unknown"
   },
   "testsRunDateTime": "2025-01-15T14:12:12.093Z",
   "testResultsSummary": {
@@ -10,6 +15,7 @@
     "failCount": 135,
     "errorCount": 287
   },
+  "testsRunDescription": "Java Engine Connectathon 38 Results",
   "results": [
     {
       "testStatus": "pass",

@@ -1,7 +1,12 @@
 {
   "cqlengine": {
     "apiUrl": "https://vonkhost:4081/$cql",
-    "cqlVersion": "1.5"
+    "cqlVersion": "1.5",
+    "description": "Unknown",
+    "cqlTranslator": "Firely .NET CQL Translator",
+    "cqlTranslatorVersion": "Unknown",
+    "cqlEngine": "Firely .NET CQL Engine",
+    "cqlEngineVersion": "Unknown"
   },
   "testsRunDateTime": "2025-05-11T14:46:00.540Z",
   "testResultsSummary": {
@@ -10,6 +15,7 @@
     "failCount": 182,
     "errorCount": 265
   },
+  "testsRunDescription": "Test results for the May 2025 connectathon .NET CQL SDK",
   "results": [
     {
       "testStatus": "pass",

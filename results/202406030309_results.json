@@ -1,10 +1,21 @@
 {
-  "summary": {
+  "cqlengine": {
+    "apiUrl": "http://localhost:8080/fhir/$cql",
+    "cqlVersion": "1.5",
+    "description": "Unknown",
+    "cqlTranslator": "Java CQFramework Translator",
+    "cqlTranslatorVersion": "Unknown",
+    "cqlEngine": "Java CQFramework Engine",
+    "cqlEngineVersion": "Unknown"
+  },
+  "testsRunDateTime": "2025-09-18T23:44:23.021Z",
+  "testResultsSummary": {
     "pass": 1162,
     "skip": 38,
     "fail": 325,
     "error": 44
   },
+  "testsRunDescription": "Initial results of Java engine",
   "results": [
     {
       "testStatus": "pass",
