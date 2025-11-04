@@ -3,7 +3,7 @@
     "apiUrl": "https://vonkhost:4081/$cql",
     "cqlVersion": "1.5",
     "description": "Unknown",
-    "cqlTranslator": "Java CQFramework Translator",
+    "cqlTranslator": "Firely .NET CQL Translator",
     "cqlTranslatorVersion": "Unknown",
     "cqlEngine": "Java CQFramework Engine",
     "cqlEngineVersion": "Unknown"
