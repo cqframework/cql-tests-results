@@ -5,7 +5,7 @@
     "description": "Unknown",
     "cqlTranslator": "Firely .NET CQL Translator",
     "cqlTranslatorVersion": "Unknown",
-    "cqlEngine": "Java CQFramework Engine",
+    "cqlEngine": "Firely .NET CQL Engine",
     "cqlEngineVersion": "Unknown"
   },
   "testsRunDateTime": "2025-09-14T21:20:09.816Z",
