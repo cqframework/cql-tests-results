@@ -15,7 +15,7 @@
     "failCount": 135,
     "errorCount": 287
   },
-  "testsRunDescription": "Java Engine Results 2, HL7 FHIR Connectathon 40",
+  "testsRunDescription": "Java Engine Connectathon 38 Results",
   "results": [
     {
       "testStatus": "pass",
