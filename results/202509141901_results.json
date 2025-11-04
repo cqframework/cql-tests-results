@@ -3,7 +3,7 @@
     "engineName": "Cozeva",
     "cqlVersion": "1.5",
     "description": "Unknown",
-    "cqlTranslator": "Java CQFramework Translator",
+    "cqlTranslator": "Cozeva CQL Translator",
     "cqlTranslatorVersion": "Unknown",
     "cqlEngine": "Java CQFramework Engine",
     "cqlEngineVersion": "Unknown"
