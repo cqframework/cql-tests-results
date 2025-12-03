@@ -1,0 +1,77 @@
+library LibraryOne version '1.0.0'
+
+using FHIR version '4.0.1'
+
+include FHIRHelpers version '4.0.1' called FHIRHelpers
+
+codesystem "HCPCS": 'http://terminology.hl7.org/CodeSystem/HCPCS'
+
+// --- Define codes used in the measure ---
+code "1100F": '1100F' from "HCPCS" display 'Patient screened for future fall risk/history of falls'
+code "0518F": '0518F' from "HCPCS" display 'Falls plan of care documented'
+code "0518F-1P": '0518F-1P' from "HCPCS" display 'Patient not ambulatory'
+code "0518F-8P": '0518F-8P' from "HCPCS" display 'Falls plan of care performance not met'
+
+parameter "Measurement Period" Interval<DateTime> = Interval[DateTime('2024-01-01'), DateTime('2024-12-31')]
+
+context Patient
+
+
+define function AgeAtEncounter(E Encounter):
+  AgeInYears(Patient.birthDate, E.period.start)
+
+define function CodeRecordedInInterval(code Code, period Interval<DateTime>):
+  exists (
+    [Observation] O where O.code.coding.code in { code } and O.effectiveDateTime in period
+    union
+    [Procedure] P where P.code.coding.code in { code } and P.performedDateTime in period
+    union
+    [Encounter] E where exists(E.type T where T.coding.code in { code }) and E.period.start in period
+    union
+    [Condition] C where C.code.coding.code in { code } and C.assertedDate in period
+  )
+
+// --- Initial Population ---
+// Patients aged 65+ with a history of falls documented within the measurement period
+define "Initial Population":
+  exists (
+    [Encounter] E
+      where E.status = 'finished'
+        and E.period.start in "Measurement Period"
+        and AgeAtEncounter(E) >= 65
+        and CodeRecordedInInterval("1100F", Interval[E.period.start, E.period.start])
+
+// --- Denominator ---
+// Same as initial population for this measure
+define "Denominator":
+  "Initial Population"
+
+// --- Denominator Exclusions ---
+// Hospice services occurred any time during measurement period
+define "Denominator Exclusions":
+  CodeRecordedInInterval("G9720", "Measurement Period")
+
+define "Denominator Exceptions":
+
+// patient not ambulatory 0518F-1P documented
+
+exists [Encounter] E
+
+where E.status = 'finished'
+
+and E.period starts in "Measurement Period"
+
+and E.type contains "0518F-1P"
+
+
+define "Numerator A Performance Met":
+
+// Falls plan of care documented (0518F) during measurement period
+define "Numerator A Performance Met":
+  CodeRecordedInInterval("0518F", "Measurement Period")
+
+define "Numerator B Performance Not Met":
+
+// Plan of care performance not met but data completeness met (0518F-8P)
+define "Numerator B Performance Not Met":
+  CodeRecordedInInterval("0518F-8P", "Measurement Period")
