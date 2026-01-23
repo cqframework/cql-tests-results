@@ -1,7 +1,12 @@
 {
   "cqlengine": {
     "apiUrl": "http://localhost:8080/fhir/$cql",
-    "cqlVersion": "1.5"
+    "cqlVersion": "1.5",
+    "description": "Unknown",
+    "cqlTranslator": "Java CQFramework Translator",
+    "cqlTranslatorVersion": "Unknown",
+    "cqlEngine": "Java CQFramework Engine",
+    "cqlEngineVersion": "4.1.0"
   },
   "testsRunDateTime": "2026-01-23T18:39:26.140Z",
   "testResultsSummary": {
