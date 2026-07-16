@@ -15,7 +15,7 @@
     "failCount": 176,
     "errorCount": 0
   },
-  "testsRunDescription": "Local host test run",
+  "testsRunDescription": "CMS Connectathon 7",
   "results": [
     {
       "testsName": "CqlAggregateFunctionsTest",

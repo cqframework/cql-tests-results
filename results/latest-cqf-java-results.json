@@ -1,21 +1,21 @@
 {
   "cqlengine": {
-    "apiUrl": "https://cloud.alphora.com/sandbox/r4/cds/fhir/$cql",
+    "apiUrl": "http://localhost:8080/fhir/$cql",
     "description": "",
     "cqlVersion": "1.5",
     "cqlTranslator": "Java CQFramework Translator",
-    "cqlTranslatorVersion": "4.2.0",
+    "cqlTranslatorVersion": "Unknown",
     "cqlEngine": "Java CQFramework Engine",
-    "cqlEngineVersion": "4.2.0"
+    "cqlEngineVersion": "4.1.0"
   },
-  "testsRunDateTime": "2026-04-02T17:49:26.532Z",
+  "testsRunDateTime": "2026-07-15T19:27:27.439Z",
   "testResultsSummary": {
-    "passCount": 1537,
-    "skipCount": 41,
-    "failCount": 153,
+    "passCount": 1633,
+    "skipCount": 14,
+    "failCount": 176,
     "errorCount": 0
   },
-  "testsRunDescription": "US Realm Connectathon 2026, Post-connectathon",
+  "testsRunDescription": "CMS Connectathon 7",
   "results": [
     {
       "testsName": "CqlAggregateFunctionsTest",
@@ -704,6 +704,7 @@
       "testName": "RolledOutIntervals",
       "expression": "({\n\t\t\t\t  Interval[@2012-01-01, @2012-02-28],\n\t\t\t\t  Interval[@2012-02-01, @2012-03-31],\n\t\t\t\t  Interval[@2012-03-01, @2012-04-30]\n\t\t\t\t}) M\n\t\t\t\t  aggregate R starting (null as List<Interval<DateTime>>): R union ({\n\t\t\t\t    M X\n\t\t\t\t      let S: Max({ end of Last(R) + 1 day, start of X }),\n\t\t\t\t        E: S + Quantity{ value: duration in days of X, unit: 'days' }\n\t\t\t\t      return Interval[S, E]\n\t\t\t\t  })",
       "testStatus": "skip",
+      "skipMessage": "Skipped by config: CQLtoELM - Could not resolve identifier MedicationRequestIntervals in the current library",
       "expected": "{\n\t\t\t\t  Interval[@2012-01-01, @2012-02-28],\n\t\t\t\t  Interval[@2012-02-29, @2012-04-28],\n\t\t\t\t  Interval[@2012-04-29, @2012-06-28]\n\t\t\t\t}",
       "invalid": "false",
       "capabilities": [
@@ -1081,6 +1082,116 @@
     },
     {
       "testsName": "CqlArithmeticFunctionsTest",
+      "groupName": "Ceiling",
+      "testName": "CeilingMaxInteger",
+      "expression": "Ceiling(2147483647)",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "2147483647",
+      "expected": "2147483647",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlArithmeticFunctionsTest",
+      "groupName": "Ceiling",
+      "testName": "CeilingMaxIntegerAsDecimal",
+      "expression": "Ceiling(2147483647.0)",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "2147483647",
+      "expected": "2147483647",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlArithmeticFunctionsTest",
+      "groupName": "Ceiling",
+      "testName": "CeilingMaxIntegerAsDecimalWhereDecimalIsNonZero",
+      "expression": "Ceiling(2147483647.2)",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "-2147483648",
+      "expected": "null",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlArithmeticFunctionsTest",
+      "groupName": "Ceiling",
+      "testName": "CeilingIntegerGreaterThanMaxInteger",
+      "expression": "Ceiling(2147483648)",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Bad format for Integer literal",
+      "expected": "null",
+      "invalid": "syntax"
+    },
+    {
+      "testsName": "CqlArithmeticFunctionsTest",
+      "groupName": "Ceiling",
+      "testName": "CeilingDecimalGreaterThanMaxInteger",
+      "expression": "Ceiling(2147483648.2)",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "-2147483647",
+      "expected": "null",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlArithmeticFunctionsTest",
+      "groupName": "Ceiling",
+      "testName": "CeilingMinInteger",
+      "expression": "Ceiling(-2147483648)",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "-2147483648",
+      "expected": "-2147483648",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlArithmeticFunctionsTest",
+      "groupName": "Ceiling",
+      "testName": "CeilingMinIntegerAsDecimal",
+      "expression": "Ceiling(-2147483648.0)",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "-2147483648",
+      "expected": "-2147483648",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlArithmeticFunctionsTest",
+      "groupName": "Ceiling",
+      "testName": "CeilingMinIntegerAsDecimalWhereDecimalIsNonZero",
+      "expression": "Ceiling(-2147483648.2)",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "-2147483648",
+      "expected": "-2147483648",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlArithmeticFunctionsTest",
+      "groupName": "Ceiling",
+      "testName": "CeilingIntegerLessThanMinInteger",
+      "expression": "Ceiling(-2147483649)",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Bad format for Integer literal",
+      "expected": "null",
+      "invalid": "syntax"
+    },
+    {
+      "testsName": "CqlArithmeticFunctionsTest",
+      "groupName": "Ceiling",
+      "testName": "CeilingDecimalLessThanMinInteger",
+      "expression": "Ceiling(-2147483649.2)",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "2147483647",
+      "expected": "null",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlArithmeticFunctionsTest",
       "groupName": "Divide",
       "testName": "DivideNull",
       "expression": "1 / null",
@@ -1301,6 +1412,116 @@
     },
     {
       "testsName": "CqlArithmeticFunctionsTest",
+      "groupName": "Floor",
+      "testName": "FloorMaxInteger",
+      "expression": "Floor(2147483647)",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "2147483647",
+      "expected": "2147483647",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlArithmeticFunctionsTest",
+      "groupName": "Floor",
+      "testName": "FloorMaxIntegerAsDecimal",
+      "expression": "Floor(2147483647.0)",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "2147483647",
+      "expected": "2147483647",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlArithmeticFunctionsTest",
+      "groupName": "Floor",
+      "testName": "FloorMaxIntegerAsDecimalWhereDecimalIsNonZero",
+      "expression": "Floor(2147483647.2)",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "2147483647",
+      "expected": "2147483647",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlArithmeticFunctionsTest",
+      "groupName": "Floor",
+      "testName": "FloorIntegerGreaterThanMaxInteger",
+      "expression": "Floor(2147483648)",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Bad format for Integer literal",
+      "expected": "null",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlArithmeticFunctionsTest",
+      "groupName": "Floor",
+      "testName": "FloorDecimalGreaterThanMaxInteger",
+      "expression": "Floor(2147483648.2)",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "-2147483648",
+      "expected": "null",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlArithmeticFunctionsTest",
+      "groupName": "Floor",
+      "testName": "FloorMinInteger",
+      "expression": "Floor(-2147483648)",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "-2147483648",
+      "expected": "-2147483648",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlArithmeticFunctionsTest",
+      "groupName": "Floor",
+      "testName": "FloorMinIntegerAsDecimal",
+      "expression": "Floor(-2147483648.0)",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "-2147483648",
+      "expected": "-2147483648",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlArithmeticFunctionsTest",
+      "groupName": "Floor",
+      "testName": "FloorMinIntegerAsDecimalWhereDecimalIsNonZero",
+      "expression": "Floor(-2147483648.2)",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "2147483647",
+      "expected": "null",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlArithmeticFunctionsTest",
+      "groupName": "Floor",
+      "testName": "FloorIntegerLessThanMinInteger",
+      "expression": "Floor(-2147483649)",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Bad format for Integer literal",
+      "expected": "null",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlArithmeticFunctionsTest",
+      "groupName": "Floor",
+      "testName": "FloorDecimalLessThanMinInteger",
+      "expression": "Floor(-2147483649.2)",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "2147483646",
+      "expected": "null",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlArithmeticFunctionsTest",
       "groupName": "Exp",
       "testName": "ExpNull",
       "expression": "Exp(null as Decimal)",
@@ -1378,7 +1599,9 @@
       "groupName": "Exp",
       "testName": "Exp1000",
       "expression": "Exp(1000)",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Results in positive infinity",
       "invalid": "true"
     },
     {
@@ -1386,7 +1609,9 @@
       "groupName": "Exp",
       "testName": "Exp1000D",
       "expression": "Exp(1000.0)",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Results in positive infinity",
       "invalid": "true"
     },
     {
@@ -1418,7 +1643,7 @@
       "expression": "HighBoundary(@2014-01-01T08, 17)",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "@2014-01-01T08:59:59.999Z",
+      "actual": "@2014-01-01T08:59:59.999-06:00",
       "expected": "@2014-01-01T08:59:59.999",
       "invalid": "false"
     },
@@ -1431,6 +1656,28 @@
       "responseStatus": 200,
       "actual": "@T10:30:59.999",
       "expected": "@T10:30:59.999",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlArithmeticFunctionsTest",
+      "groupName": "HighBoundary",
+      "testName": "HighBoundaryNull",
+      "expression": "HighBoundary(null as Decimal, 8)",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "null",
+      "expected": "null",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlArithmeticFunctionsTest",
+      "groupName": "HighBoundary",
+      "testName": "HighBoundaryNullPrecision",
+      "expression": "HighBoundary(1.58888, null)",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "1.58888999",
+      "expected": "1.58888999",
       "invalid": "false"
     },
     {
@@ -1561,7 +1808,7 @@
       "expression": "LowBoundary(@2014-01-01T08, 17)",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "@2014-01-01T08:00:00.000Z",
+      "actual": "@2014-01-01T08:00:00.000-06:00",
       "expected": "@2014-01-01T08:00:00.000",
       "invalid": "false"
     },
@@ -1574,6 +1821,28 @@
       "responseStatus": 200,
       "actual": "@T10:30:00.000",
       "expected": "@T10:30:00.000",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlArithmeticFunctionsTest",
+      "groupName": "LowBoundary",
+      "testName": "LowBoundaryNull",
+      "expression": "LowBoundary(null as Decimal, 8)",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "null",
+      "expected": "null",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlArithmeticFunctionsTest",
+      "groupName": "LowBoundary",
+      "testName": "LowBoundaryNullPrecision",
+      "expression": "LowBoundary(1.58888, null)",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "1.58888",
+      "expected": "1.58888000",
       "invalid": "false"
     },
     {
@@ -1592,7 +1861,9 @@
       "groupName": "Ln",
       "testName": "Ln0",
       "expression": "Ln(0)",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Results in negative infinity",
       "invalid": "true"
     },
     {
@@ -1600,7 +1871,9 @@
       "groupName": "Ln",
       "testName": "LnNeg0",
       "expression": "Ln(-0)",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Results in negative infinity",
       "invalid": "true"
     },
     {
@@ -1729,7 +2002,9 @@
       "groupName": "MinValue",
       "testName": "BooleanMinValue",
       "expression": "minimum Boolean",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:The Minimum operator is not implemented for type {urn:hl7-org:elm-types:r1}Boolean",
       "invalid": "true"
     },
     {
@@ -1803,7 +2078,9 @@
       "groupName": "MaxValue",
       "testName": "BooleanMaxValue",
       "expression": "maximum Boolean",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:The Maximum operator is not implemented for type {urn:hl7-org:elm-types:r1}Boolean",
       "invalid": "true"
     },
     {
@@ -2341,7 +2618,9 @@
       "groupName": "Predecessor",
       "testName": "PredecessorUnderflowDt",
       "expression": "predecessor of DateTime(0001, 1, 1, 0, 0, 0, 0)",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:The year: 0 falls below the accepted bounds of 0001-9999.",
       "invalid": "true"
     },
     {
@@ -2349,7 +2628,9 @@
       "groupName": "Predecessor",
       "testName": "PredecessorUnderflowT",
       "expression": "predecessor of @T00:00:00.000",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:The result of the successor operation precedes the minimum value allowed for the Time type",
       "invalid": "true"
     },
     {
@@ -2577,10 +2858,10 @@
       "groupName": "Round",
       "testName": "RoundNeg0D5",
       "expression": "Round(-0.5)",
-      "testStatus": "pass",
+      "testStatus": "fail",
       "responseStatus": 200,
       "actual": "0",
-      "expected": "0.0",
+      "expected": "-1.0",
       "invalid": "false"
     },
     {
@@ -2621,10 +2902,10 @@
       "groupName": "Round",
       "testName": "RoundNeg1D5",
       "expression": "Round(-1.5)",
-      "testStatus": "pass",
+      "testStatus": "fail",
       "responseStatus": 200,
       "actual": "-1",
-      "expected": "-1.0",
+      "expected": "-2.0",
       "invalid": "false"
     },
     {
@@ -2797,7 +3078,9 @@
       "groupName": "Successor",
       "testName": "SuccessorOverflowDt",
       "expression": "successor of DateTime(9999, 12, 31, 23, 59, 59, 999)",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:The year: 10000 falls above the accepted bounds of 0001-9999.",
       "invalid": "true"
     },
     {
@@ -2805,7 +3088,9 @@
       "groupName": "Successor",
       "testName": "SuccessorOverflowT",
       "expression": "successor of @T23:59:59.999",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:The result of the successor operation exceeds the maximum value allowed for the Time type",
       "invalid": "true"
     },
     {
@@ -3506,10 +3791,10 @@
       "groupName": "Equal",
       "testName": "TupleEqDifferentNamesWithOneNullId",
       "expression": "Tuple { Id : null, Name : 'John' } = Tuple { Id : 1, Name : 'James' }",
-      "testStatus": "fail",
+      "testStatus": "pass",
       "responseStatus": 200,
       "actual": "null",
-      "expected": "false",
+      "expected": "null",
       "invalid": "false"
     },
     {
@@ -5090,10 +5375,10 @@
       "groupName": "Equivalent",
       "testName": "EquivFloat1Float1WithPrecision",
       "expression": "1.5 ~ 1.55",
-      "testStatus": "fail",
+      "testStatus": "pass",
       "responseStatus": 200,
       "actual": "false",
-      "expected": "true",
+      "expected": "false",
       "invalid": "false"
     },
     {
@@ -5101,10 +5386,10 @@
       "groupName": "Equivalent",
       "testName": "EquivFloat1Float1WithPrecisionAndZ",
       "expression": "1.50 ~ 1.55",
-      "testStatus": "fail",
+      "testStatus": "pass",
       "responseStatus": 200,
       "actual": "false",
-      "expected": "true",
+      "expected": "false",
       "invalid": "false"
     },
     {
@@ -5222,7 +5507,9 @@
       "groupName": "Equivalent",
       "testName": "EquivTupleJohnJohnFalse",
       "expression": "Tuple { Id : 1, Name : 'John', Position: 'Shift Manager' } ~ Tuple { Id : 1, Name : 'John' }",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Library expression-1.0.0 loaded, but had errors: Could not resolve call to operator Equivalent with signature (tuple{Id:System.Integer,Name:System.String,Position:System.String}, tuple{Id:System.Integer,Name:System.String}).",
       "invalid": "true"
     },
     {
@@ -5230,7 +5517,9 @@
       "groupName": "Equivalent",
       "testName": "EquivTupleJohnJohnFalse2",
       "expression": "Tuple { Id : 1, Name : 'John' } ~ Tuple { Id : 1, Name : 'John', Position: 'Shift Manager' }",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Library expression-1.0.0 loaded, but had errors: Could not resolve call to operator Equivalent with signature (tuple{Id:System.Integer,Name:System.String}, tuple{Id:System.Integer,Name:System.String,Position:System.String}).",
       "invalid": "true"
     },
     {
@@ -5546,10 +5835,10 @@
       "groupName": "Not Equal",
       "testName": "TupleNotEqDifferingNamesWithOneNullId",
       "expression": "Tuple{ Id : null, Name : 'John' } != Tuple{ Id : 1, Name : 'Joe' }",
-      "testStatus": "fail",
+      "testStatus": "pass",
       "responseStatus": 200,
       "actual": "null",
-      "expected": "true",
+      "expected": "null",
       "invalid": "false"
     },
     {
@@ -5626,6 +5915,424 @@
       "testStatus": "pass",
       "responseStatus": 200,
       "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityMillisecondEqualMs",
+      "expression": "1 millisecond = 1 'ms'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityMillisecondEqualMilliseconds",
+      "expression": "1 millisecond = 1 milliseconds",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityMillisecondsEqualMs",
+      "expression": "1 milliseconds = 1 'ms'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantitySecondEqualS",
+      "expression": "1 second = 1 's'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantitySecondEqualSeconds",
+      "expression": "1 second = 1 seconds",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantitySecondsEqualS",
+      "expression": "1 seconds = 1 's'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityMinuteEqualMin",
+      "expression": "1 minute = 1 'min'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityMinuteEqualMinutes",
+      "expression": "1 minute = 1 minutes",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityMinutesEqualMin",
+      "expression": "1 minutes = 1 'min'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityHourEqualH",
+      "expression": "1 hour = 1 'h'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityHourEqualHours",
+      "expression": "1 hour = 1 hours",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityHoursEqualH",
+      "expression": "1 hours = 1 'h'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityDayEqualD",
+      "expression": "1 day = 1 'd'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityDayEqualDays",
+      "expression": "1 day = 1 days",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityDaysEqualD",
+      "expression": "1 days = 1 'd'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityWeekEqualWk",
+      "expression": "1 week = 1 'wk'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityWeekEqualWeeks",
+      "expression": "1 week = 1 weeks",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityWeeksEqualWk",
+      "expression": "1 weeks = 1 'wk'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityMonthEqualMo",
+      "expression": "1 month = 1 'mo'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "null",
+      "expected": "null",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityMonthNotEqualMo",
+      "expression": "1 month != 1 'mo'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "null",
+      "expected": "null",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityMonthEquivalentMo",
+      "expression": "1 month ~ 1 'mo'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityMonthEqualMonths",
+      "expression": "1 month = 1 months",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityMonthsNotEqualMo",
+      "expression": "1 months != 1 'mo'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "null",
+      "expected": "null",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityMonthsEquivalentMo",
+      "expression": "1 months ~ 1 'mo'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityYearEqualA",
+      "expression": "1 year = 1 'a'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "null",
+      "expected": "null",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityYearNotEqualA",
+      "expression": "1 year != 1 'a'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "null",
+      "expected": "null",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityYearEquivalentA",
+      "expression": "1 year ~ 1 'a'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityYearsEqualYear",
+      "expression": "1 years = 1 year",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityYearsNotEqualA",
+      "expression": "1 years != 1 'a'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "null",
+      "expected": "null",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestQuantityYearsEquivalentA",
+      "expression": "1 years ~ 1 'a'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestYearEquivalentMonths",
+      "expression": "1 year ~ 12 months",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "false",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestYearEquivalentDays",
+      "expression": "1 year ~ 365 days",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "false",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestMonthEquivalentDays",
+      "expression": "1 month ~ 30 days",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "false",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestWeekEqualDays",
+      "expression": "1 week = 7 days",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "null",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestDayEqualHours",
+      "expression": "1 day = 24 hours",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "null",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestHourEqualMinutes",
+      "expression": "1 hour = 60 minutes",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "null",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestMinuteEqualSeconds",
+      "expression": "1 minute = 60 seconds",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "null",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlComparisonOperatorsTest",
+      "groupName": "Unit Comparison",
+      "testName": "TestSecondEqualMilliseconds",
+      "expression": "1 second = 1000 milliseconds",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "null",
       "expected": "true",
       "invalid": "false"
     },
@@ -5843,7 +6550,9 @@
       "groupName": "Add",
       "testName": "DateTimeAddInvalidYears",
       "expression": "DateTime(2005, 10, 10) + 8000 years",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:The year: 10005 falls above the accepted bounds of 0001-9999.",
       "invalid": "true"
     },
     {
@@ -5952,7 +6661,7 @@
       "expression": "DateTime(2005, 5, 10, 5, 20, 30) + 5 hours",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "@2005-05-10T10:20:30Z",
+      "actual": "@2005-05-10T10:20:30-06:00",
       "expected": "@2005-05-10T10:20:30",
       "invalid": "false"
     },
@@ -6062,7 +6771,7 @@
       "expression": "DateTime(2005, 5, 10, 5, 5, 5) + 5 seconds",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "@2005-05-10T05:05:10Z",
+      "actual": "@2005-05-10T05:05:10-06:00",
       "expected": "@2005-05-10T05:05:10",
       "invalid": "false"
     },
@@ -6073,7 +6782,7 @@
       "expression": "DateTime(2016, 6, 10, 5, 5, 5) + 55 seconds",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "@2016-06-10T05:06:00Z",
+      "actual": "@2016-06-10T05:06:00-06:00",
       "expected": "@2016-06-10T05:06:00",
       "invalid": "false"
     },
@@ -6084,7 +6793,7 @@
       "expression": "DateTime(2005, 5, 10, 5, 5, 5, 5) + 5 milliseconds",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "@2005-05-10T05:05:05.010Z",
+      "actual": "@2005-05-10T05:05:05.010-06:00",
       "expected": "@2005-05-10T05:05:05.010",
       "invalid": "false"
     },
@@ -6095,7 +6804,7 @@
       "expression": "DateTime(2016, 6, 10, 5, 5, 5, 5) + 995 milliseconds",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "@2016-06-10T05:05:06.000Z",
+      "actual": "@2016-06-10T05:05:06.000-06:00",
       "expected": "@2016-06-10T05:05:06.000",
       "invalid": "false"
     },
@@ -6843,7 +7552,7 @@
       "expression": "DateTime(2003, 10, 29, 20, 50, 33)",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "@2003-10-29T20:50:33Z",
+      "actual": "@2003-10-29T20:50:33-06:00",
       "expected": "@2003-10-29T20:50:33",
       "invalid": "false"
     },
@@ -6854,7 +7563,7 @@
       "expression": "DateTime(2003, 10, 29, 20, 50, 33, 955)",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "@2003-10-29T20:50:33.955Z",
+      "actual": "@2003-10-29T20:50:33.955-06:00",
       "expected": "@2003-10-29T20:50:33.955",
       "invalid": "false"
     },
@@ -7014,9 +7723,11 @@
       "testsName": "CqlDateTimeOperatorsTest",
       "groupName": "DateTimeComponentFrom",
       "testName": "DateTimeComponentFromTimezone",
-      "expression": "timezone from DateTime(2003, 10, 29, 20, 50, 33, 955, 1)",
+      "expression": "timezoneoffset from DateTime(2003, 10, 29, 20, 50, 33, 955, 1)",
       "testStatus": "skip",
-      "invalid": "true",
+      "skipMessage": "Skipped by config: CQLtoElm - Timezone keyword is only valid in 1.3 or lower",
+      "expected": "1.00",
+      "invalid": "false",
       "capabilities": [
         {
           "code": "component-extraction"
@@ -7029,11 +7740,10 @@
     {
       "testsName": "CqlDateTimeOperatorsTest",
       "groupName": "DateTimeComponentFrom",
-      "testName": "DateTimeComponentFromTimezone2",
-      "expression": "timezoneoffset from DateTime(2003, 10, 29, 20, 50, 33, 955, 1)",
-      "testStatus": "pass",
-      "responseStatus": 200,
-      "actual": "1",
+      "testName": "DateTimeComponentFromTimezoneOffset",
+      "expression": "timezone from DateTime(2003, 10, 29, 20, 50, 33, 955, 1)",
+      "testStatus": "skip",
+      "skipMessage": "Skipped by config: test versionTo 1.3 not applicable to engine version 1.5",
       "expected": "1.00",
       "invalid": "false",
       "capabilities": [
@@ -7710,7 +8420,7 @@
       "testStatus": "fail",
       "responseStatus": 200,
       "actual": "Interval[17, 44]",
-      "expected": "Interval[ 16, 44 ]",
+      "expected": "Interval[ 17, 44 ]",
       "invalid": "false",
       "capabilities": [
         {
@@ -7802,7 +8512,9 @@
       "groupName": "Uncertainty tests",
       "testName": "DateTimeDurationBetweenUncertainDiv",
       "expression": "(days between DateTime(2014, 1, 15) and DateTime(2014, 2))\n\t\t\t\tdiv (months between DateTime(2005) and DateTime(2006, 5))",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Invalid Interval - the ending boundary (2) must be greater than or equal to the starting boundary (3).",
       "invalid": "true",
       "capabilities": [
         {
@@ -7953,7 +8665,7 @@
       "expression": "@2012-03-10T10:20:00",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "@2012-03-10T10:20:00Z",
+      "actual": "@2012-03-10T10:20:00-06:00",
       "expected": "@2012-03-10T10:20:00",
       "invalid": "false",
       "capabilities": [
@@ -7972,7 +8684,7 @@
       "expression": "@2013-03-10T09:20:00",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "@2013-03-10T09:20:00Z",
+      "actual": "@2013-03-10T09:20:00-06:00",
       "expected": "@2013-03-10T09:20:00",
       "invalid": "false",
       "capabilities": [
@@ -8085,6 +8797,7 @@
       "testName": "TimeDurationBetweenHourDiffPrecision",
       "expression": "hours between @T06Z and @T07:00:00Z",
       "testStatus": "skip",
+      "skipMessage": "Skipped by config: CQLtoELM - Syntax error at Z",
       "invalid": "true",
       "capabilities": [
         {
@@ -9401,7 +10114,9 @@
       "groupName": "Subtract",
       "testName": "DateTimeSubtractInvalidYears",
       "expression": "DateTime(2005, 10, 10) - 2005 years",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:The year: 0 falls below the accepted bounds of 0001-9999.",
       "invalid": "true"
     },
     {
@@ -9543,7 +10258,7 @@
       "expression": "DateTime(2005, 5, 10, 5, 5, 10) - 5 seconds",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "@2005-05-10T05:05:05Z",
+      "actual": "@2005-05-10T05:05:05-06:00",
       "expected": "@2005-05-10T05:05:05",
       "invalid": "false"
     },
@@ -9565,7 +10280,7 @@
       "expression": "DateTime(2016, 10, 1, 10, 20, 30) - 15 hours",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "@2016-09-30T19:20:30Z",
+      "actual": "@2016-09-30T19:20:30-06:00",
       "expected": "@2016-09-30T19:20:30",
       "invalid": "false"
     },
@@ -9576,7 +10291,7 @@
       "expression": "DateTime(2016, 6, 10, 5, 5, 5) - 6 seconds",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "@2016-06-10T05:04:59Z",
+      "actual": "@2016-06-10T05:04:59-06:00",
       "expected": "@2016-06-10T05:04:59",
       "invalid": "false"
     },
@@ -9587,7 +10302,7 @@
       "expression": "DateTime(2005, 5, 10, 5, 5, 5, 10) - 5 milliseconds",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "@2005-05-10T05:05:05.005Z",
+      "actual": "@2005-05-10T05:05:05.005-06:00",
       "expected": "@2005-05-10T05:05:05.005",
       "invalid": "false"
     },
@@ -9598,7 +10313,7 @@
       "expression": "DateTime(2016, 6, 10, 5, 5, 5, 5) - 6 milliseconds",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "@2016-06-10T05:05:04.999Z",
+      "actual": "@2016-06-10T05:05:04.999-06:00",
       "expected": "@2016-06-10T05:05:04.999",
       "invalid": "false"
     },
@@ -9904,7 +10619,9 @@
       "groupName": "Messaging",
       "testName": "TestMessageError",
       "expression": "Message(3 + 1, true, '400', 'Error', 'This is an error!')",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:400: This is an error!\n4",
       "invalid": "true"
     },
     {
@@ -10519,7 +11236,7 @@
       "expression": "collapse { Interval[@T01:59:59.999, @T10:59:59.999], Interval[@T08:59:59.999, @T15:59:59.999], Interval[@T17:59:59.999, @T20:59:59.999], Interval[@T18:59:59.999, @T22:59:59.999] }",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "Interval[01:59:59.999, 15:59:59.999],Interval[17:59:59.999, 22:59:59.999]",
+      "actual": "Interval[@T01:59:59.999, @T15:59:59.999],Interval[@T17:59:59.999, @T22:59:59.999]",
       "expected": "{Interval [ @T01:59:59.999, @T15:59:59.999 ], Interval [ @T17:59:59.999, @T22:59:59.999 ]}",
       "invalid": "false"
     },
@@ -10530,7 +11247,7 @@
       "expression": "collapse { Interval[@T01:59:59.999, @T10:59:59.999], Interval[@T11:00:00.000, @T15:59:59.999] }",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "Interval[01:59:59.999, 15:59:59.999]",
+      "actual": "Interval[@T01:59:59.999, @T15:59:59.999]",
       "expected": "{Interval [ @T01:59:59.999, @T15:59:59.999 ]}",
       "invalid": "false"
     },
@@ -10618,7 +11335,7 @@
       "expression": "expand { Interval[@T10:00, @T12:30] } per hour",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "Interval[10, 10],Interval[11, 11],Interval[12, 12]",
+      "actual": "Interval[@T10, @T10],Interval[@T11, @T11],Interval[@T12, @T12]",
       "expected": "{ Interval[@T10, @T10], Interval[@T11, @T11], Interval[@T12, @T12] }",
       "invalid": "false"
     },
@@ -10640,7 +11357,7 @@
       "expression": "expand { Interval[@T10:00, @T12:30) } per hour",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "Interval[10, 10],Interval[11, 11],Interval[12, 12]",
+      "actual": "Interval[@T10, @T10],Interval[@T11, @T11],Interval[@T12, @T12]",
       "expected": "{ Interval[@T10, @T10], Interval[@T11, @T11], Interval[@T12, @T12] }",
       "invalid": "false"
     },
@@ -10846,7 +11563,7 @@
       "testsName": "CqlIntervalOperatorsTest",
       "groupName": "Contains",
       "testName": "TestNullElement1",
-      "expression": "null contains 5",
+      "expression": "null as Interval<Integer> contains 5",
       "testStatus": "pass",
       "responseStatus": 200,
       "actual": "false",
@@ -11014,7 +11731,7 @@
       "expression": "end of Interval[@2016-05-01T00:00:00.000, @2016-05-02T00:00:00.000]",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "@2016-05-02T00:00:00.000Z",
+      "actual": "@2016-05-02T00:00:00.000-06:00",
       "expected": "@2016-05-02T00:00:00.000",
       "invalid": "false"
     },
@@ -11274,17 +11991,6 @@
     {
       "testsName": "CqlIntervalOperatorsTest",
       "groupName": "Except",
-      "testName": "NullInterval",
-      "expression": "Interval[null, null]",
-      "testStatus": "pass",
-      "responseStatus": 200,
-      "actual": "null",
-      "expected": "null",
-      "invalid": "false"
-    },
-    {
-      "testsName": "CqlIntervalOperatorsTest",
-      "groupName": "Except",
       "testName": "TestExceptNull",
       "expression": "Interval[null, null] except Interval[null, null]",
       "testStatus": "pass",
@@ -11388,7 +12094,7 @@
       "expression": "Interval[@T05:59:59.999, @T10:59:59.999] except Interval[@T08:59:59.999, @T10:59:59.999]",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "Interval[05:59:59.999, 08:59:59.998]",
+      "actual": "Interval[@T05:59:59.999, @T08:59:59.998]",
       "expected": "Interval [ @T05:59:59.999, @T08:59:59.998 ]",
       "invalid": "false"
     },
@@ -11399,7 +12105,7 @@
       "expression": "Interval[@T08:59:59.999, @T11:59:59.999] except Interval[@T05:59:59.999, @T10:59:59.999]",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "Interval[11:00:00.000, 11:59:59.999]",
+      "actual": "Interval[@T11:00:00.000, @T11:59:59.999]",
       "expected": "Interval [ @T11:00:00.000, @T11:59:59.999 ]",
       "invalid": "false"
     },
@@ -11993,7 +12699,7 @@
       "expression": "Interval[@T04:59:59.999, @T09:59:59.999] intersect Interval[@T04:59:59.999, @T06:59:59.999]",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "Interval[04:59:59.999, 06:59:59.999]",
+      "actual": "Interval[@T04:59:59.999, @T06:59:59.999]",
       "expected": "Interval [ @T04:59:59.999, @T06:59:59.999 ]",
       "invalid": "false"
     },
@@ -13904,7 +14610,7 @@
       "expression": "start of Interval[@2016-05-01T00:00:00.000, @2016-05-02T00:00:00.000]",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "@2016-05-01T00:00:00.000Z",
+      "actual": "@2016-05-01T00:00:00.000-06:00",
       "expected": "@2016-05-01T00:00:00.000",
       "invalid": "false"
     },
@@ -14146,7 +14852,7 @@
       "expression": "Interval[@T05:59:59.999, @T15:59:59.999] union Interval[@T10:59:59.999, @T20:59:59.999]",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "Interval[05:59:59.999, 20:59:59.999]",
+      "actual": "Interval[@T05:59:59.999, @T20:59:59.999]",
       "expected": "Interval [ @T05:59:59.999, @T20:59:59.999 ]",
       "invalid": "false"
     },
@@ -14210,7 +14916,9 @@
       "groupName": "Width",
       "testName": "DateTimeWidth",
       "expression": "width of Interval[DateTime(2012, 1, 5), DateTime(2012, 1, 25)]",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Cannot perform width operator with argument of type 'DateTime'.",
       "invalid": "true"
     },
     {
@@ -14218,7 +14926,9 @@
       "groupName": "Width",
       "testName": "TimeWidth",
       "expression": "width of Interval[@T05:59:59.999, @T15:59:59.999]",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Cannot perform width operator with argument of type 'Time'.",
       "invalid": "true"
     },
     {
@@ -14404,7 +15114,7 @@
       "expression": "Interval[@T00:00:00.000, @T23:59:59.599]",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "Interval[00:00:00.000, 23:59:59.599]",
+      "actual": "Interval[@T00:00:00.000, @T23:59:59.599]",
       "expected": "Interval[@T00:00:00.000, @T23:59:59.599]",
       "invalid": "false"
     },
@@ -14424,7 +15134,9 @@
       "groupName": "Interval",
       "testName": "InvalidIntegerInterval",
       "expression": "Interval[5, 3]",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Invalid Interval - the ending boundary (3) must be greater than or equal to the starting boundary (5).",
       "invalid": "true"
     },
     {
@@ -14432,7 +15144,9 @@
       "groupName": "Interval",
       "testName": "InvalidIntegerIntervalA",
       "expression": "Interval[5, 5)",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Invalid Interval - the ending boundary (5) must be greater than or equal to the starting boundary (5).",
       "invalid": "true"
     },
     {
@@ -14637,7 +15351,7 @@
       "testsName": "CqlListOperatorsTest",
       "groupName": "Contains",
       "testName": "ContainsNullLeft",
-      "expression": "null contains 'a'",
+      "expression": "null as List<String> contains 'a'",
       "testStatus": "pass",
       "responseStatus": 200,
       "actual": "false",
@@ -14824,10 +15538,10 @@
       "testsName": "CqlListOperatorsTest",
       "groupName": "Equal",
       "testName": "EqualABCAnd123",
-      "expression": "{ 'a', 'b', 'c' } = { 1, 2, 3 }",
-      "testStatus": "fail",
+      "expression": "{ 'a', 'b', 'c' } as List<Any> ~ { 1, 2, 3 } as List<Any>",
+      "testStatus": "pass",
       "responseStatus": 200,
-      "actual": "EvaluationError:Library expression-1.0.0 loaded, but had errors: Could not resolve call to operator Equal with signature (list<System.String>, list<System.Integer>).",
+      "actual": "false",
       "expected": "false",
       "invalid": "false"
     },
@@ -14835,10 +15549,10 @@
       "testsName": "CqlListOperatorsTest",
       "groupName": "Equal",
       "testName": "Equal123AndABC",
-      "expression": "{ 1, 2, 3 } = { 'a', 'b', 'c' }",
-      "testStatus": "fail",
+      "expression": "{ 1, 2, 3 } as List<Any> = { 'a', 'b', 'c' } as List<Any>",
+      "testStatus": "pass",
       "responseStatus": 200,
-      "actual": "EvaluationError:Library expression-1.0.0 loaded, but had errors: Could not resolve call to operator Equal with signature (list<System.Integer>, list<System.String>).",
+      "actual": "false",
       "expected": "false",
       "invalid": "false"
     },
@@ -14846,10 +15560,10 @@
       "testsName": "CqlListOperatorsTest",
       "groupName": "Equal",
       "testName": "Equal123AndString123",
-      "expression": "{ 1, 2, 3 } = { '1', '2', '3' }",
-      "testStatus": "fail",
+      "expression": "{ 1, 2, 3 } as List<Any> = { '1', '2', '3' } as List<Any>",
+      "testStatus": "pass",
       "responseStatus": 200,
-      "actual": "EvaluationError:Library expression-1.0.0 loaded, but had errors: Could not resolve call to operator Equal with signature (list<System.Integer>, list<System.String>).",
+      "actual": "false",
       "expected": "false",
       "invalid": "false"
     },
@@ -15220,7 +15934,7 @@
       "testsName": "CqlListOperatorsTest",
       "groupName": "In",
       "testName": "In1Null",
-      "expression": "1 in null",
+      "expression": "1 in null as List<Integer>",
       "testStatus": "pass",
       "responseStatus": 200,
       "actual": "false",
@@ -15396,7 +16110,7 @@
       "testsName": "CqlListOperatorsTest",
       "groupName": "Includes",
       "testName": "IncludesNullLeft",
-      "expression": "null includes {2}",
+      "expression": "null as List<Integer> includes {2}",
       "testStatus": "fail",
       "responseStatus": 200,
       "actual": "false",
@@ -15407,7 +16121,7 @@
       "testsName": "CqlListOperatorsTest",
       "groupName": "Includes",
       "testName": "IncludesNullRight",
-      "expression": "{'s', 'a', 'm'} includes null",
+      "expression": "{'s', 'a', 'm'} includes null as List<String>",
       "testStatus": "fail",
       "responseStatus": 200,
       "actual": "false",
@@ -15517,7 +16231,7 @@
       "testsName": "CqlListOperatorsTest",
       "groupName": "IncludedIn",
       "testName": "IncludedInNullLeft",
-      "expression": "null included in {2}",
+      "expression": "null as List<Integer> included in {2}",
       "testStatus": "fail",
       "responseStatus": 200,
       "actual": "false",
@@ -15528,7 +16242,7 @@
       "testsName": "CqlListOperatorsTest",
       "groupName": "IncludedIn",
       "testName": "IncludedInNullRight",
-      "expression": "{'s', 'a', 'm'} included in null",
+      "expression": "{'s', 'a', 'm'} included in null as List<String>",
       "testStatus": "fail",
       "responseStatus": 200,
       "actual": "false",
@@ -15935,10 +16649,10 @@
       "testsName": "CqlListOperatorsTest",
       "groupName": "Equivalent",
       "testName": "EquivalentABCAnd123",
-      "expression": "{ 'a', 'b', 'c' } ~ { 1, 2, 3 }",
-      "testStatus": "fail",
+      "expression": "{ 'a', 'b', 'c' } as List<Any> ~ { 1, 2, 3 } as List<Any>",
+      "testStatus": "pass",
       "responseStatus": 200,
-      "actual": "EvaluationError:Library expression-1.0.0 loaded, but had errors: Could not resolve call to operator Equivalent with signature (list<System.String>, list<System.Integer>).",
+      "actual": "false",
       "expected": "false",
       "invalid": "false"
     },
@@ -15946,10 +16660,10 @@
       "testsName": "CqlListOperatorsTest",
       "groupName": "Equivalent",
       "testName": "Equivalent123AndABC",
-      "expression": "{ 1, 2, 3 } ~ { 'a', 'b', 'c' }",
-      "testStatus": "fail",
+      "expression": "{ 1, 2, 3 } as List<Any> ~ { 'a', 'b', 'c' } as List<Any>",
+      "testStatus": "pass",
       "responseStatus": 200,
-      "actual": "EvaluationError:Library expression-1.0.0 loaded, but had errors: Could not resolve call to operator Equivalent with signature (list<System.Integer>, list<System.String>).",
+      "actual": "false",
       "expected": "false",
       "invalid": "false"
     },
@@ -15957,10 +16671,10 @@
       "testsName": "CqlListOperatorsTest",
       "groupName": "Equivalent",
       "testName": "Equivalent123AndString123",
-      "expression": "{ 1, 2, 3 } ~ { '1', '2', '3' }",
-      "testStatus": "fail",
+      "expression": "{ 1, 2, 3 } as List<Any> ~ { '1', '2', '3' } as List<Any>",
+      "testStatus": "pass",
       "responseStatus": 200,
-      "actual": "EvaluationError:Library expression-1.0.0 loaded, but had errors: Could not resolve call to operator Equivalent with signature (list<System.Integer>, list<System.String>).",
+      "actual": "false",
       "expected": "false",
       "invalid": "false"
     },
@@ -16067,10 +16781,10 @@
       "testsName": "CqlListOperatorsTest",
       "groupName": "NotEqual",
       "testName": "NotEqualABCAnd123",
-      "expression": "{ 'a', 'b', 'c' } != { 1, 2, 3 }",
-      "testStatus": "fail",
+      "expression": "{ 'a', 'b', 'c' } as List<Any> != { 1, 2, 3 } as List<Any>",
+      "testStatus": "pass",
       "responseStatus": 200,
-      "actual": "EvaluationError:Library expression-1.0.0 loaded, but had errors: Could not resolve call to operator Equal with signature (list<System.String>, list<System.Integer>).",
+      "actual": "true",
       "expected": "true",
       "invalid": "false"
     },
@@ -16078,10 +16792,10 @@
       "testsName": "CqlListOperatorsTest",
       "groupName": "NotEqual",
       "testName": "NotEqual123AndABC",
-      "expression": "{ 1, 2, 3 } != { 'a', 'b', 'c' }",
-      "testStatus": "fail",
+      "expression": "{ 1, 2, 3 } as List<Any> != { 'a', 'b', 'c' } as List<Any>",
+      "testStatus": "pass",
       "responseStatus": 200,
-      "actual": "EvaluationError:Library expression-1.0.0 loaded, but had errors: Could not resolve call to operator Equal with signature (list<System.Integer>, list<System.String>).",
+      "actual": "true",
       "expected": "true",
       "invalid": "false"
     },
@@ -16089,10 +16803,10 @@
       "testsName": "CqlListOperatorsTest",
       "groupName": "NotEqual",
       "testName": "NotEqual123AndString123",
-      "expression": "{ 1, 2, 3 } != { '1', '2', '3' }",
-      "testStatus": "fail",
+      "expression": "{ 1, 2, 3 } as List<Any> != { '1', '2', '3' } as List<Any>",
+      "testStatus": "pass",
       "responseStatus": 200,
-      "actual": "EvaluationError:Library expression-1.0.0 loaded, but had errors: Could not resolve call to operator Equal with signature (list<System.Integer>, list<System.String>).",
+      "actual": "true",
       "expected": "true",
       "invalid": "false"
     },
@@ -16143,8 +16857,8 @@
     {
       "testsName": "CqlListOperatorsTest",
       "groupName": "ProperContains",
-      "testName": "ProperContainsNullRightFalse",
-      "expression": "{'s', 'u', 'n'} properly includes null",
+      "testName": "ProperContains1",
+      "expression": "null as List<String> properly includes 'a'",
       "testStatus": "pass",
       "responseStatus": 200,
       "actual": "false",
@@ -16154,8 +16868,118 @@
     {
       "testsName": "CqlListOperatorsTest",
       "groupName": "ProperContains",
+      "testName": "ProperContains2",
+      "expression": "{} properly includes 'a'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "false",
+      "expected": "false",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "ProperContains",
+      "testName": "ProperContains3",
+      "expression": "{ 'a' } properly includes 'a'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "false",
+      "expected": "false",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "ProperContains",
+      "testName": "ProperContains4",
+      "expression": "{ null } properly includes null as String",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "false",
+      "expected": "false",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "ProperContains",
+      "testName": "ProperContainsNullRightFalse",
+      "expression": "{'s', 'u', 'n'} properly includes null as String",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "false",
+      "expected": "false",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "ProperContains",
+      "testName": "ProperContains5",
+      "expression": "{ null, null } properly includes null as String",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "false",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "ProperContains",
       "testName": "ProperContainsNullRightTrue",
-      "expression": "{'s', 'u', 'n', null} properly includes null",
+      "expression": "{'s', 'u', 'n', null} properly includes null as String",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "ProperContains",
+      "testName": "ProperContains6",
+      "expression": "{ 'a', 'b' } properly includes 'a'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "ProperContains",
+      "testName": "ProperContains7",
+      "expression": "{ 'a', 'a' } properly includes 'a'",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "false",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "ProperContains",
+      "testName": "ProperContains8",
+      "expression": "{ 'a', 'b' } properly includes 'c'",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "false",
+      "expected": "false",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "ProperContains",
+      "testName": "ProperContains9",
+      "expression": "{ 'a', null } properly includes 'a'",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "null",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "ProperContains",
+      "testName": "ProperContains10",
+      "expression": "{ 'a', 'b', null } properly includes 'a'",
       "testStatus": "pass",
       "responseStatus": 200,
       "actual": "true",
@@ -16178,17 +17002,17 @@
       "groupName": "ProperContains",
       "testName": "ProperContainsTimeNull",
       "expression": "{ @T15:59:59.999, @T20:59:59.999, @T20:59:49.999 } properly includes @T15:59:59",
-      "testStatus": "pass",
+      "testStatus": "fail",
       "responseStatus": 200,
       "actual": "null",
-      "expected": "null",
+      "expected": "false",
       "invalid": "false"
     },
     {
       "testsName": "CqlListOperatorsTest",
       "groupName": "ProperIn",
-      "testName": "ProperInNullRightFalse",
-      "expression": "null properly included in {'s', 'u', 'n'}",
+      "testName": "ProperIn1",
+      "expression": "'a' properly included in null as List<String>",
       "testStatus": "pass",
       "responseStatus": 200,
       "actual": "false",
@@ -16198,8 +17022,118 @@
     {
       "testsName": "CqlListOperatorsTest",
       "groupName": "ProperIn",
+      "testName": "ProperIn2",
+      "expression": "'a' properly included in {}",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "false",
+      "expected": "false",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "ProperIn",
+      "testName": "ProperIn3",
+      "expression": "'a' properly included in { 'a' }",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "false",
+      "expected": "false",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "ProperIn",
+      "testName": "ProperIn4",
+      "expression": "null as String properly included in { null }",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "false",
+      "expected": "false",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "ProperIn",
+      "testName": "ProperInNullRightFalse",
+      "expression": "null as String properly included in {'s', 'u', 'n'}",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "false",
+      "expected": "false",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "ProperIn",
+      "testName": "ProperIn5",
+      "expression": "null as String properly included in { null, null }",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "false",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "ProperIn",
       "testName": "ProperInNullRightTrue",
       "expression": "null properly included in {'s', 'u', 'n', null}",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "ProperIn",
+      "testName": "ProperIn6",
+      "expression": "'a' properly included in { 'a', 'b' }",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "true",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "ProperIn",
+      "testName": "ProperIn7",
+      "expression": "'a' properly included in { 'a', 'a' }",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "false",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "ProperIn",
+      "testName": "ProperIn8",
+      "expression": "'c' properly included in { 'a', 'b' }",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "false",
+      "expected": "false",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "ProperIn",
+      "testName": "ProperIn9",
+      "expression": "'a' properly included in { 'a', null }",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "null",
+      "expected": "true",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "ProperIn",
+      "testName": "ProperIn10",
+      "expression": "'a' properly included in { 'a', 'b', null }",
       "testStatus": "pass",
       "responseStatus": 200,
       "actual": "true",
@@ -16222,10 +17156,10 @@
       "groupName": "ProperIn",
       "testName": "ProperInTimeNull",
       "expression": "@T15:59:59 properly included in { @T15:59:59.999, @T20:59:59.999, @T20:59:49.999 }",
-      "testStatus": "pass",
+      "testStatus": "fail",
       "responseStatus": 200,
       "actual": "null",
-      "expected": "null",
+      "expected": "false",
       "invalid": "false"
     },
     {
@@ -16331,7 +17265,7 @@
       "testsName": "CqlListOperatorsTest",
       "groupName": "ProperlyIncludes",
       "testName": "ProperlyIncludesNullLeft",
-      "expression": "null properly includes {2}",
+      "expression": "null as List<Integer> properly includes {2}",
       "testStatus": "fail",
       "responseStatus": 200,
       "actual": "false",
@@ -16441,7 +17375,7 @@
       "testsName": "CqlListOperatorsTest",
       "groupName": "ProperlyIncludedIn",
       "testName": "ProperlyIncludedInNulRight",
-      "expression": "{'s', 'u', 'n'} properly included in null",
+      "expression": "{'s', 'u', 'n'} properly included in null as List<String>",
       "testStatus": "fail",
       "responseStatus": 200,
       "actual": "false",
@@ -16486,7 +17420,9 @@
       "groupName": "SingletonFrom",
       "testName": "SingletonFrom12",
       "expression": "singleton from { 1, 2 }",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Expected a list with at most one element, but found a list with multiple elements.",
       "invalid": "true"
     },
     {
@@ -16564,6 +17500,106 @@
       "responseStatus": 200,
       "actual": "",
       "expected": "{}",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "Slice",
+      "testName": "SliceAll",
+      "expression": "Slice({ 1, 2, 3, 4, 5 })",
+      "testStatus": "skip",
+      "skipMessage": "Skipped by config: test version 2.0 not applicable to engine version 1.5",
+      "expected": "{ 1, 2, 3, 4, 5 }",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "Slice",
+      "testName": "SliceEmpty",
+      "expression": "Slice({ })",
+      "testStatus": "skip",
+      "skipMessage": "Skipped by config: test version 2.0 not applicable to engine version 1.5",
+      "expected": "{ }",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "Slice",
+      "testName": "SliceNull",
+      "expression": "Slice(null)",
+      "testStatus": "skip",
+      "skipMessage": "Skipped by config: test version 2.0 not applicable to engine version 1.5",
+      "expected": "null",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "Slice",
+      "testName": "SliceStart",
+      "expression": "Slice({ 1, 2, 3, 4, 5 }, 1)",
+      "testStatus": "skip",
+      "skipMessage": "Skipped by config: test version 2.0 not applicable to engine version 1.5",
+      "expected": "{ 2, 3, 4, 5 }",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "Slice",
+      "testName": "SliceStartNull",
+      "expression": "Slice({ 1, 2, 3, 4, 5 }, null)",
+      "testStatus": "skip",
+      "skipMessage": "Skipped by config: test version 2.0 not applicable to engine version 1.5",
+      "expected": "{ 1, 2, 3, 4, 5 }",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "Slice",
+      "testName": "SliceEnd",
+      "expression": "Slice({ 1, 2, 3, 4, 5 }, 1, 3)",
+      "testStatus": "skip",
+      "skipMessage": "Skipped by config: test version 2.0 not applicable to engine version 1.5",
+      "expected": "{ 2, 3 }",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "Slice",
+      "testName": "SliceEndNull",
+      "expression": "Slice({ 1, 2, 3, 4, 5 }, 1, null)",
+      "testStatus": "skip",
+      "skipMessage": "Skipped by config: test version 2.0 not applicable to engine version 1.5",
+      "expected": "{ 2, 3, 4, 5 }",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "Slice",
+      "testName": "SliceNegative",
+      "expression": "Slice({ 1, 2, 3, 4, 5 }, -2)",
+      "testStatus": "skip",
+      "skipMessage": "Skipped by config: test version 2.0 not applicable to engine version 1.5",
+      "expected": "{ 4, 5 }",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "Slice",
+      "testName": "SliceStartAndNegative",
+      "expression": "Slice({ 1, 2, 3, 4, 5 }, 1, -1)",
+      "testStatus": "skip",
+      "skipMessage": "Skipped by config: test version 2.0 not applicable to engine version 1.5",
+      "expected": "{ 2, 3, 4 }",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlListOperatorsTest",
+      "groupName": "Slice",
+      "testName": "SlicePast",
+      "expression": "Slice({ 1, 2, 3, 4, 5 }, 5)",
+      "testStatus": "skip",
+      "skipMessage": "Skipped by config: test version 2.0 not applicable to engine version 1.5",
+      "expected": "{ }",
       "invalid": "false"
     },
     {
@@ -18316,6 +19352,17 @@
     {
       "testsName": "CqlStringOperatorsTest",
       "groupName": "Substring",
+      "testName": "SubstringEmptyAnd0",
+      "expression": "Substring('', 0)",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "null",
+      "expected": "''",
+      "invalid": "false"
+    },
+    {
+      "testsName": "CqlStringOperatorsTest",
+      "groupName": "Substring",
       "testName": "SubstringAB0To1",
       "expression": "Substring('ab', 0, 1)",
       "testStatus": "pass",
@@ -18429,7 +19476,7 @@
       "expression": "ToString(DateTime(2000, 1, 1, 15, 25, 25, 300))",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "2000-01-01T15:25:25.300+00:00",
+      "actual": "2000-01-01T15:25:25.300-06:00",
       "expected": "'2000-01-01T15:25:25.300'",
       "invalid": "false"
     },
@@ -18638,7 +19685,7 @@
       "expression": "ToDateTime('2014-01-01T12:05:05.955')",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "@2014-01-01T12:05:05.955Z",
+      "actual": "@2014-01-01T12:05:05.955-06:00",
       "expected": "@2014-01-01T12:05:05.955",
       "invalid": "false"
     },
@@ -18803,7 +19850,7 @@
       "expression": "ToTime('T14:30:00.0+05:30')",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "EvaluationError:Invalid precision index: 7",
+      "actual": "null",
       "expected": "@T14:30:00.000",
       "invalid": "false"
     },
@@ -18814,7 +19861,7 @@
       "expression": "ToTime('T14:30:00.0-05:45')",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "EvaluationError:Invalid precision index: 7",
+      "actual": "null",
       "expected": "@T14:30:00.000",
       "invalid": "false"
     },
@@ -18933,7 +19980,9 @@
       "groupName": "DateTime",
       "testName": "DateTimeUpperBoundExcept",
       "expression": "DateTime(10000, 12, 31, 23, 59, 59, 999)",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Invalid date time components Count 'n' must be non-negative, but was -1.",
       "invalid": "true"
     },
     {
@@ -18941,7 +19990,9 @@
       "groupName": "DateTime",
       "testName": "DateTimeLowerBoundExcept",
       "expression": "DateTime(0000, 1, 1, 0, 0, 0, 0)",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Invalid date time components The year: 0 falls below the accepted bounds of 0001-9999.",
       "invalid": "true"
     },
     {
@@ -18951,7 +20002,7 @@
       "expression": "DateTime(2016, 7, 7, 6, 25, 33, 910)",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "@2016-07-07T06:25:33.910Z",
+      "actual": "@2016-07-07T06:25:33.910-06:00",
       "expected": "@2016-07-07T06:25:33.910",
       "invalid": "false"
     },
@@ -18984,7 +20035,7 @@
       "expression": "DateTime(0001, 1, 1, 0, 0, 0, 0)",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "@0001-01-01T00:00:00.000Z",
+      "actual": "@0001-01-01T00:00:00.000-06:00",
       "expected": "@0001-01-01T00:00:00.000",
       "invalid": "false"
     },
@@ -18995,7 +20046,7 @@
       "expression": "DateTime(9999, 12, 31, 23, 59, 59, 999)",
       "testStatus": "fail",
       "responseStatus": 200,
-      "actual": "@9999-12-31T23:59:59.999Z",
+      "actual": "@9999-12-31T23:59:59.999-06:00",
       "expected": "@9999-12-31T23:59:59.999",
       "invalid": "false"
     },
@@ -19025,11 +20076,11 @@
       "testsName": "CqlTypesTest",
       "groupName": "Quantity",
       "testName": "QuantityTest2",
-      "expression": "2.5589 '{eskimo kisses}'",
+      "expression": "2.5589 '{eskimo_kisses}'",
       "testStatus": "pass",
       "responseStatus": 200,
       "actual": "[object Object]",
-      "expected": "2.5589 '{eskimo kisses}'",
+      "expected": "2.5589 '{eskimo_kisses}'",
       "invalid": "false"
     },
     {
@@ -19070,7 +20121,9 @@
       "groupName": "Time",
       "testName": "TimeUpperBoundHours",
       "expression": "@T24:59:59.999",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Library expression-1.0.0 loaded, but had errors: Invalid time input (T24:59:59.999). Use ISO 8601 time representation (hh:mm:ss.fff).",
       "invalid": "semantic"
     },
     {
@@ -19078,7 +20131,9 @@
       "groupName": "Time",
       "testName": "TimeUpperBoundMinutes",
       "expression": "@T23:60:59.999",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Library expression-1.0.0 loaded, but had errors: Invalid time input (T23:60:59.999). Use ISO 8601 time representation (hh:mm:ss.fff).",
       "invalid": "semantic"
     },
     {
@@ -19086,16 +20141,21 @@
       "groupName": "Time",
       "testName": "TimeUpperBoundSeconds",
       "expression": "@T23:59:60.999",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Library expression-1.0.0 loaded, but had errors: Invalid time input (T23:59:60.999). Use ISO 8601 time representation (hh:mm:ss.fff).",
       "invalid": "semantic"
     },
     {
       "testsName": "CqlTypesTest",
       "groupName": "Time",
-      "testName": "TimeUpperBoundMillis",
+      "testName": "TimeMillisParsing",
       "expression": "@T23:59:59.10000",
-      "testStatus": "skip",
-      "invalid": "semantic"
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Count 'n' must be non-negative, but was -2.",
+      "expected": "@T23:59:59.100",
+      "invalid": "false"
     },
     {
       "testsName": "CqlTypesTest",
@@ -19333,7 +20393,9 @@
       "groupName": "Integer",
       "testName": "Integer2Pow31",
       "expression": "2147483648",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Bad format for Integer literal",
       "invalid": "true"
     },
     {
@@ -19341,7 +20403,9 @@
       "groupName": "Integer",
       "testName": "IntegerPos2Pow31",
       "expression": "+2147483648",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Bad format for Integer literal",
       "invalid": "true"
     },
     {
@@ -19360,7 +20424,9 @@
       "groupName": "Integer",
       "testName": "Integer2Pow31ToInf1",
       "expression": "2147483649",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Bad format for Integer literal",
       "invalid": "true"
     },
     {
@@ -19368,7 +20434,9 @@
       "groupName": "Integer",
       "testName": "IntegerPos2Pow31ToInf1",
       "expression": "+2147483649",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Bad format for Integer literal",
       "invalid": "true"
     },
     {
@@ -19376,7 +20444,9 @@
       "groupName": "Integer",
       "testName": "IntegerNeg2Pow31ToInf1",
       "expression": "-2147483649",
-      "testStatus": "skip",
+      "testStatus": "pass",
+      "responseStatus": 200,
+      "actual": "EvaluationError:Bad format for Integer literal",
       "invalid": "true"
     },
     {
@@ -19747,7 +20817,9 @@
       "groupName": "Decimal",
       "testName": "DecimalTenthStep",
       "expression": "0.000000001",
-      "testStatus": "skip",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "1e-9",
       "invalid": "true"
     },
     {
@@ -19755,7 +20827,9 @@
       "groupName": "Decimal",
       "testName": "DecimalPosTenthStep",
       "expression": "+0.000000001",
-      "testStatus": "skip",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "1e-9",
       "invalid": "true"
     },
     {
@@ -19763,7 +20837,9 @@
       "groupName": "Decimal",
       "testName": "DecimalNegTenthStep",
       "expression": "-0.000000001",
-      "testStatus": "skip",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "-1e-9",
       "invalid": "true"
     },
     {
@@ -19804,7 +20880,9 @@
       "groupName": "Decimal",
       "testName": "Decimal10Pow28",
       "expression": "10000000000000000000000000000.00000000",
-      "testStatus": "skip",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "1e+28",
       "invalid": "true"
     },
     {
@@ -19812,7 +20890,9 @@
       "groupName": "Decimal",
       "testName": "DecimalPos10Pow28",
       "expression": "+10000000000000000000000000000.00000000",
-      "testStatus": "skip",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "1e+28",
       "invalid": "true"
     },
     {
@@ -19820,7 +20900,9 @@
       "groupName": "Decimal",
       "testName": "DecimalNeg10Pow28",
       "expression": "-10000000000000000000000000000.00000000",
-      "testStatus": "skip",
+      "testStatus": "fail",
+      "responseStatus": 200,
+      "actual": "-1e+28",
       "invalid": "true"
     }
   ]
